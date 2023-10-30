@@ -4,21 +4,14 @@ from django.views.generic import (
     ListView,
     DetailView,
     CreateView,
+    UpdateView,
+    DeleteView,
 )
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
+
 
 def blog_home(request):
-    """
-        Render the home page of the blog.
-
-        Retrieves all blog posts from the database and displays them on the home page.
-
-        Args:
-            request: HttpRequest object representing the current request.
-
-        Returns:
-            Rendered HTML page displaying a list of blog posts.
-
-    """
     context = {
         "posts": Post.objects.all()
     }
@@ -36,7 +29,7 @@ class PostDetailView(DetailView):
     model = Post
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content']
 
@@ -45,15 +38,32 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('blog-home')
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
 
 def blog_about(request):
-    """
-        Render the 'About' page of the blog.
 
-        Args:
-            request: HttpRequest object representing the current request.
-
-        Returns:
-            Rendered HTML page with information about the blog.
-    """
     return render(request, "blog/about.html", {"title": "About"})
