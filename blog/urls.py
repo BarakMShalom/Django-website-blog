@@ -9,6 +9,14 @@ from .views import (
     UserPostListView,
 )
 
+"""
+URL patterns for the blog app.
+
+This module defines the URL patterns for the blog app, mapping views to specific URLs.
+The patterns include routes for listing, creating, updating, and deleting blog posts,
+as well as user-specific post lists and an about page.
+"""
+
 urlpatterns = [
     path("", PostListView.as_view(), name="blog-home"),
     path("user/<str:username>", UserPostListView.as_view(), name="user-posts"),

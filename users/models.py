@@ -10,8 +10,8 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username} profile"
 
-    def save(self):
-        super().save()
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
         img = Image.open(self.image.path)
 

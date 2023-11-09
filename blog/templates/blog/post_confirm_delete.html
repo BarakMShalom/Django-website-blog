@@ -1,14 +1,25 @@
 {% extends "blog/base.html" %}
 {% block content %}
+    <!-- Container for the delete post form -->
     <div class="content-section">
+        <!-- Form to handle post deletion -->
         <form method="POST">
+            <!-- CSRF token for security -->
             {% csrf_token %}
+
+            <!-- Fieldset with legend for semantic structure -->
             <fieldset class="form-group">
+                <!-- Heading for the delete confirmation -->
                 <legend class="border-bottom mb-4">Delete post</legend>
+                <!-- Display the post title in the confirmation message -->
                 <h2>Are you sure you want to delete the post "{{ object.title }}"?</h2>
             </fieldset>
+
+            <!-- Form submission buttons -->
             <div class="form-group">
+                <!-- Button to confirm post deletion -->
                 <button class="btn btn-outline-danger" type="submit">Yes, delete</button>
+                <!-- Button to cancel and go back to post detail -->
                 <a class="btn btn-outline-secondary" href="{% url 'post-detail' object.id %}">Cancel</a>
             </div>
         </form>

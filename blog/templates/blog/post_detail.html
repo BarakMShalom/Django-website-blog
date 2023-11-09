@@ -1,12 +1,24 @@
 {% extends "blog/base.html" %}
+
 {% block content %}
+    <!-- Page title -->
     <h1>This is a blog post:</h1>
+
+        <!-- Display the blog post content -->
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+
+          <!-- Media body containing post details -->
           <div class="media-body">
+            <!-- Author information and post metadata -->
             <div class="article-metadata">
+              <!-- Author link to their posts -->
               <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
+
+              <!-- Date of the post -->
               <small class="text-muted">{{ object.date_posted|date:'F d, Y' }}</small>
+
+              <!-- Edit and delete buttons for the post (if user is the author) -->
               {% if object.author == user %}
                 <div>
                     <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
@@ -14,7 +26,11 @@
                 </div>
               {% endif %}
             </div>
+
+            <!-- Post title -->
             <h2 class="article-title">{{ object.title }}</h2>
+
+            <!-- Post content -->
             <p class="article-content">{{ object.content }}</p>
           </div>
         </article>
