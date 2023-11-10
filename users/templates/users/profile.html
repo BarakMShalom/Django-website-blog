@@ -1,21 +1,31 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+    <!-- User Profile Section -->
     <div class="content-section">
+      <!-- User Profile Display -->
       <div class="media">
+        <!-- User Profile Image -->
         <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        <!-- User Profile Information -->
         <div class="media-body">
           <h2 class="account-heading">{{ user.username }}</h2>
           <p class="text-secondary">{{ user.email }}</p>
         </div>
       </div>
+
+      <!-- Profile Update Form -->
       <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Profile info:</legend>
+                <!-- User Update Form Fields -->
                 {{ u_form|crispy }}
+                <!-- Profile Update Form Fields -->
                 {{ p_form|crispy }}
             </fieldset>
+
+            <!-- Update Button -->
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Update</button>
             </div>
